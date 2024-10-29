@@ -3,6 +3,9 @@
 // @version      1.0
 // @author       xorascs
 // @match        https://tonclayton.fun/*
+// @downloadURL  https://github.com/xorascs/Clayton/raw/main/clayton.js
+// @updateURL    https://github.com/xorascs/Clayton/raw/main/clayton.js
+// @homepage     https://github.com/xorascs/Clayton
 // @grant        none
 // ==/UserScript==
 
