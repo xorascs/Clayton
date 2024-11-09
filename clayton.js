@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Clayton Autoclicker for Stack Game
-// @version      1.0
+// @version      1.1
 // @author       xorascs
 // @match        https://tonclayton.fun/*
 // @downloadURL  https://github.com/xorascs/Clayton/raw/main/clayton.js
@@ -40,6 +40,12 @@
         const continueGame = document.querySelector('div.tap-to-restart');
         const clicksCountElement = document.querySelector('div.game_stats > div');
         const clicksCount = isNaN(Number(clicksCountElement?.innerText)) ? 0 : Number(clicksCountElement.innerText);
+        const attemptsCount = Number(document.querySelector('div.info-attempts').children[1].innerText);
+
+        if (attemptsCount == 0) {
+          console.log('You do not have enough attempts!');
+          return;
+        }
 
         if (continueGame) {
           console.log("Clicked on restart button.")
@@ -72,18 +78,9 @@
 
           clearInterval(autoClickerInterval);
 
-          let rnd = Math.floor(Math.random() * 5);
-          console.log("Random numb: " + rnd);
-          if (rnd == 0) {
-            setTimeout(() => {
-                autoClickerInterval = setInterval(simulateMouseClickOnCanvas, getRandomDelay(770, 800));
-            }, getRandomDelay(1000, 1500));
-          }
-          else {
-            setTimeout(() => {
-                autoClickerInterval = setInterval(simulateMouseClickOnCanvas, getRandomDelay(770, 800));
-            }, getRandomDelay(300, 500));
-          }
+          setTimeout(() => {
+              autoClickerInterval = setInterval(simulateMouseClickOnCanvas, getRandomDelay(770, 800));
+          }, getRandomDelay(300, 500));
         }
 
          if (canvas && !gameSessionDiv?.textContent.includes("error") && !loadingDiv) {
