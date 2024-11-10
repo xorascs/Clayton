@@ -41,8 +41,9 @@
         const clicksCountElement = document.querySelector('div.game_stats > div');
         const clicksCount = isNaN(Number(clicksCountElement?.innerText)) ? 0 : Number(clicksCountElement.innerText);
         const attemptsCount = Number(document.querySelector('div.info-attempts').children[1].innerText);
+		const timer = document.querySelector('p.stack_timer');
 
-        if (attemptsCount == 0) {
+        if (attemptsCount == 0 && !timer) {
           console.log('You do not have enough attempts!');
           return;
         }
