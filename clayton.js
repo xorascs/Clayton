@@ -37,6 +37,7 @@
         const canvas = document.querySelector('#root > div > div.game-layout > div > div > div:nth-child(1) > div > canvas');
         const gameSessionDiv = document.querySelector('div.go4109123758 > div > span');
         const loadingDiv = document.querySelector('div.greeting');
+        const doubleReward = document.querySelector('div[class="block-reward-multiply channel"] > div:nth-child(4)');
         const continueGame = document.querySelector('div.tap-to-restart');
         const clicksCountElement = document.querySelector('div.game_stats > div');
         const clicksCount = isNaN(Number(clicksCountElement?.innerText)) ? 0 : Number(clicksCountElement.innerText);
@@ -49,8 +50,16 @@
         }
 
         if (continueGame) {
-          console.log("Clicked on restart button.")
-          continueGame.click();
+          try {
+            console.log("Clicked on restart button.")
+            if (doubleReward) {
+              doubleReward.click();
+              setTimeout(() => {
+                continueGame.click();
+              },200);
+            }
+            continueGame.click();
+          } catch (err) {}
         }
 
         if (loadingDiv && !gameSessionDiv?.textContent.includes("error")) {
