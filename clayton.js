@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Clayton Autoclicker for Stack Game
-// @version      1.1
+// @version      1.2
 // @author       xorascs
 // @match        https://tonclayton.fun/*
 // @downloadURL  https://github.com/xorascs/Clayton/raw/main/clayton.js
@@ -34,116 +34,119 @@
 
     // Simulate click on the canvas
     async function simulateMouseClickOnCanvas() {
-        const canvas = document.querySelector('#root > div > div.game-layout > div > div > div:nth-child(1) > div > canvas');
-        const gameSessionDiv = document.querySelector('div.go4109123758 > div > span');
-        const loadingDiv = document.querySelector('div.greeting');
-        const doubleReward = document.querySelector('div[class="block-reward-multiply channel"] > div:nth-child(4)');
-        const continueGame = document.querySelector('div.tap-to-restart');
-        const clicksCountElement = document.querySelector('div.game_stats > div');
-        const clicksCount = isNaN(Number(clicksCountElement?.innerText)) ? 0 : Number(clicksCountElement.innerText);
-        const attemptsCount = Number(document.querySelector('div.info-attempts').children[1].innerText);
-		const timer = document.querySelector('p.stack_timer');
+        try {
+          const canvas = document.querySelector('#root > div > div.game-layout > div > div > div:nth-child(1) > div > canvas');
+          const gameSessionDiv = document.querySelector('div.go4109123758 > div > span');
+          const loadingDiv = document.querySelector('div.greeting');
+          const doubleReward = document.querySelector('div[class="block-reward-multiply channel"] > div:nth-child(4)');
+          const continueGame = document.querySelector('div.tap-to-restart');
+          const clicksCountElement = document.querySelector('div.game_stats > div');
+          const clicksCount = isNaN(Number(clicksCountElement?.innerText)) ? 0 : Number(clicksCountElement.innerText);
+          const attemptsCount = Number(document.querySelector('div.info-attempts').children[1].innerText ? document.querySelector('div.info-attempts').children[1].innerText : 0);
+          const timer = document.querySelector('p.stack_timer');
 
-        if (attemptsCount == 0 && !timer) {
-          console.log('You do not have enough attempts!');
-          return;
-        }
+          if (attemptsCount == 0 && !timer) {
+            console.log('You do not have enough attempts!');
+            return;
+          }
 
-        if (continueGame) {
-          try {
-            console.log("Clicked on restart button.")
+          if (continueGame) {
             if (doubleReward) {
               doubleReward.click();
               setTimeout(() => {
                 continueGame.click();
-              },200);
-            }
-            continueGame.click();
-          } catch (err) {}
-        }
-
-        if (loadingDiv && !gameSessionDiv?.textContent.includes("error")) {
-          console.log(`Simulating first click.`);
-
-          gameClicksCount = Math.floor(Math.random() * (155 - 85) + 85);
-          console.log("Clicks count for this game is " + gameClicksCount);
-
-          // Define the position for the click
-          let eventData = {
-              screenX: 396,
-              screenY: 640,
-              clientX: 227,
-              clientY: 90,
-              pressure: 0.5,
-              pointerId: 1
-          };
-
-          simulateEvent(canvas, 'pointerdown', eventData);
-          simulateEvent(canvas, 'mousedown', eventData);
-          simulateEvent(canvas, 'pointermove', eventData);
-          simulateEvent(canvas, 'mousemove', eventData);
-          simulateEvent(canvas, 'pointerup', { ...eventData, pressure: 0 });
-          simulateEvent(canvas, 'mouseup', { ...eventData, pressure: 0 });
-          simulateEvent(canvas, 'click', { ...eventData, pressure: 0 });
-
-          clearInterval(autoClickerInterval);
-
-          setTimeout(() => {
-              autoClickerInterval = setInterval(simulateMouseClickOnCanvas, getRandomDelay(770, 800));
-          }, getRandomDelay(300, 500));
-        }
-
-         if (canvas && !gameSessionDiv?.textContent.includes("error") && !loadingDiv) {
-            if (gameClicksCount > clicksCount) {
-              console.log(`1. Simulating click. ${gameClicksCount} ${clicksCount}`);
-
-              // Define the position for the click
-              let eventData = {
-                  screenX: 396,
-                  screenY: 640,
-                  clientX: 227,
-                  clientY: 90,
-                  pressure: 0.5,
-                  pointerId: 1
-              };
-
-              simulateEvent(canvas, 'pointerdown', eventData);
-              simulateEvent(canvas, 'mousedown', eventData);
-              simulateEvent(canvas, 'pointermove', eventData);
-              simulateEvent(canvas, 'mousemove', eventData);
-              simulateEvent(canvas, 'pointerup', { ...eventData, pressure: 0 });
-              simulateEvent(canvas, 'mouseup', { ...eventData, pressure: 0 });
-              simulateEvent(canvas, 'click', { ...eventData, pressure: 0 });
+              }, getRandomDelay(900, 1500));
+              console.log("Clicked on double reward.")
             }
             else {
-              console.log(`2. Simulating click. ${gameClicksCount} ${clicksCount}`);
-              setTimeout(() => {
-                // Define the position for the click
-              let eventData = {
-                  screenX: 396,
-                  screenY: 640,
-                  clientX: 227,
-                  clientY: 90,
-                  pressure: 0.5,
-                  pointerId: 1
-              };
-
-              simulateEvent(canvas, 'pointerdown', eventData);
-              simulateEvent(canvas, 'mousedown', eventData);
-              simulateEvent(canvas, 'pointermove', eventData);
-              simulateEvent(canvas, 'mousemove', eventData);
-              simulateEvent(canvas, 'pointerup', { ...eventData, pressure: 0 });
-              simulateEvent(canvas, 'mouseup', { ...eventData, pressure: 0 });
-              simulateEvent(canvas, 'click', { ...eventData, pressure: 0 });
-              },1000);
+              continueGame.click();
             }
-        } else if (gameSessionDiv?.textContent.includes("error")) {
-            console.log('Auto clicker paused for 2-3 minutes due to active game session.');
+            console.log("Clicked on restart button.")
+          }
+
+          if (loadingDiv && !gameSessionDiv?.textContent.includes("error")) {
+            console.log(`Simulating first click.`);
+
+            gameClicksCount = Math.floor(Math.random() * (155 - 85) + 85);
+            console.log("Clicks count for this game is " + gameClicksCount);
+
+            // Define the position for the click
+            let eventData = {
+                screenX: 396,
+                screenY: 640,
+                clientX: 227,
+                clientY: 90,
+                pressure: 0.5,
+                pointerId: 1
+            };
+
+            simulateEvent(canvas, 'pointerdown', eventData);
+            simulateEvent(canvas, 'mousedown', eventData);
+            simulateEvent(canvas, 'pointermove', eventData);
+            simulateEvent(canvas, 'mousemove', eventData);
+            simulateEvent(canvas, 'pointerup', { ...eventData, pressure: 0 });
+            simulateEvent(canvas, 'mouseup', { ...eventData, pressure: 0 });
+            simulateEvent(canvas, 'click', { ...eventData, pressure: 0 });
+
             clearInterval(autoClickerInterval);
+
             setTimeout(() => {
                 autoClickerInterval = setInterval(simulateMouseClickOnCanvas, getRandomDelay(770, 800));
-            }, getRandomDelay(120000, 180000));
-        }
+            }, getRandomDelay(300, 500));
+          }
+
+           if (canvas && !gameSessionDiv?.textContent.includes("error") && !loadingDiv) {
+              if (gameClicksCount > clicksCount) {
+                console.log(`1. Simulating click. ${gameClicksCount} ${clicksCount}`);
+
+                // Define the position for the click
+                let eventData = {
+                    screenX: 396,
+                    screenY: 640,
+                    clientX: 227,
+                    clientY: 90,
+                    pressure: 0.5,
+                    pointerId: 1
+                };
+
+                simulateEvent(canvas, 'pointerdown', eventData);
+                simulateEvent(canvas, 'mousedown', eventData);
+                simulateEvent(canvas, 'pointermove', eventData);
+                simulateEvent(canvas, 'mousemove', eventData);
+                simulateEvent(canvas, 'pointerup', { ...eventData, pressure: 0 });
+                simulateEvent(canvas, 'mouseup', { ...eventData, pressure: 0 });
+                simulateEvent(canvas, 'click', { ...eventData, pressure: 0 });
+              }
+              else {
+                console.log(`2. Simulating click. ${gameClicksCount} ${clicksCount}`);
+                setTimeout(() => {
+                  // Define the position for the click
+                let eventData = {
+                    screenX: 396,
+                    screenY: 640,
+                    clientX: 227,
+                    clientY: 90,
+                    pressure: 0.5,
+                    pointerId: 1
+                };
+
+                simulateEvent(canvas, 'pointerdown', eventData);
+                simulateEvent(canvas, 'mousedown', eventData);
+                simulateEvent(canvas, 'pointermove', eventData);
+                simulateEvent(canvas, 'mousemove', eventData);
+                simulateEvent(canvas, 'pointerup', { ...eventData, pressure: 0 });
+                simulateEvent(canvas, 'mouseup', { ...eventData, pressure: 0 });
+                simulateEvent(canvas, 'click', { ...eventData, pressure: 0 });
+                },1000);
+              }
+          } else if (gameSessionDiv?.textContent.includes("error")) {
+              console.log('Auto clicker paused for 2-3 minutes due to active game session.');
+              clearInterval(autoClickerInterval);
+              setTimeout(() => {
+                  autoClickerInterval = setInterval(simulateMouseClickOnCanvas, getRandomDelay(770, 800));
+              }, getRandomDelay(120000, 180000));
+          }
+        } catch (err) {console.log(err)}
     }
 
     // Generate random delay
